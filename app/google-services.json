@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "511053666631",
+    "firebase_url": "https://progressive-field-guide.firebaseio.com",
+    "project_id": "progressive-field-guide",
+    "storage_bucket": "progressive-field-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511053666631:android:2fe7f1443f4629ea",
+        "android_client_info": {
+          "package_name": "com.example.tyler.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511053666631-t00bve681qk2b46sutvtvu1bpnmu0tpi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tyler.myapplication",
+            "certificate_hash": "3437b8d88b0d82a8b2172b87a69ef824b7fb8195"
+          }
+        },
+        {
+          "client_id": "511053666631-pkth5nlu4dmonp77ge56klqq6d3p0nbd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK1M8jWtHSOMyhX4k-RA6qsXrb0XFRU1w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511053666631-pkth5nlu4dmonp77ge56klqq6d3p0nbd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
