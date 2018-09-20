@@ -62,6 +62,7 @@ class AgreeFragment : Fragment() {
                 },
                         { error ->
                             Log.e(TAG, "uiStateError $error")
+                            showErrorState()
                         }))
     }
 
