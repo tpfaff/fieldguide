@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.overview_list_item.*
 class OverviewFragment : Fragment() {
 
     companion object {
+        val TAG = OverviewFragment::class.java.simpleName
+
         fun newInstance(): Fragment {
             return OverviewFragment()
         }
@@ -96,7 +98,11 @@ class OverviewFragment : Fragment() {
 
             init {
                 animationView.setOnClickListener {
-                    this@OverviewFragment.fragmentManager?.beginTransaction()?.replace(R.id.root, AgreeFragment.newInstance(), AgreeFragment.TAG)?.commit()
+                    this@OverviewFragment.fragmentManager
+                            ?.beginTransaction()
+                            ?.replace(R.id.root, AgreeFragment.newInstance(), AgreeFragment.TAG)
+                            ?.addToBackStack(AgreeFragment.TAG)
+                            ?.commit()
                 }
             }
         }

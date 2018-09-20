@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +20,23 @@ import kotlinx.android.synthetic.main.fragment_agree.*
 
 class AgreeFragment : Fragment() {
 
+
+    companion object {
+
+        val TAG = AgreeFragment::class.java.simpleName
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @return A new instance of fragment AgreeFragment.
+         */
+        fun newInstance() =
+                AgreeFragment().apply {
+                    arguments = Bundle().apply {}
+                }
+    }
+
     lateinit var agreeFragmentViewModel: AgreeFragmentViewModel
     val bin = CompositeDisposable()
 
@@ -29,7 +47,7 @@ class AgreeFragment : Fragment() {
         (agreeFragmentViewModel.uiStateChanged
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { uiState ->
+                .subscribe({ uiState ->
                     when (uiState) {
                         is UiState.Loading -> {
                             showLoadingState()
@@ -41,7 +59,10 @@ class AgreeFragment : Fragment() {
                             showErrorState()
                         }
                     }
-                })
+                },
+                        { error ->
+                            Log.e(TAG, "uiStateError $error")
+                        }))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,19 +77,19 @@ class AgreeFragment : Fragment() {
         agreeFragmentViewModel.loadPolls()
     }
 
-    fun showLoadingState(){
+    fun showLoadingState() {
         Log.d(TAG, "showLoadingState")
         progress_bar.visibility = View.VISIBLE
     }
 
-    fun showLoadedState(uiState: UiState.ListReady){
+    fun showLoadedState(uiState: UiState.ListReady) {
         progress_bar.visibility = View.GONE
         recycler_view.adapter = AgreeAdapter(uiState.list)
     }
 
-    fun showErrorState(){
+    fun showErrorState() {
         progress_bar.visibility = View.GONE
-        //todo add more error ui
+        Toast.makeText(this.context, "Couldn't load data", Toast.LENGTH_LONG).show()
     }
 
     override fun onResume() {
@@ -92,8 +113,8 @@ class AgreeFragment : Fragment() {
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             holder.titleTextView.setText(list.get(position)?.title)
             holder.bodyTextView.setText(list.get(position)?.body)
-            holder.sourceTextView.setText(list.get(position)?.source)
-            holder.percentTextView.setText(list.get(position)?.percent+"%")
+            holder.sourceTextView.setText(list.get(position)?.displayUrl)
+            holder.percentTextView.setText(list.get(position)?.percent + "%")
         }
 
         override fun getItemCount(): Int {
@@ -112,19 +133,4 @@ class AgreeFragment : Fragment() {
         }
     }
 
-    companion object {
-
-        val TAG = AgreeFragment::class.java.simpleName
-
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment AgreeFragment.
-         */
-        fun newInstance() =
-                AgreeFragment().apply {
-                    arguments = Bundle().apply {}
-                }
-    }
 }
