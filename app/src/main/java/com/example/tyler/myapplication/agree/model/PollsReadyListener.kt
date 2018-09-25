@@ -1,7 +1,6 @@
-package com.example.tyler.myapplication.agree
+package com.example.tyler.myapplication.agree.model
 
 import com.google.firebase.database.DatabaseError
-import io.reactivex.Observable
 import io.reactivex.Single
 
 interface PollsReadyListener{

@@ -1,4 +1,4 @@
-package com.example.tyler.myapplication.agree
+package com.example.tyler.myapplication.agree.model
 
 sealed class UiState(){
     class Loading: UiState()

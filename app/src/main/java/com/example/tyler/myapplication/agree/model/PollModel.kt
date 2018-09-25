@@ -1,4 +1,4 @@
-package com.example.tyler.myapplication.agree
+package com.example.tyler.myapplication.agree.model
 
 data class PollModel(val title: String = "",
                      val body: String = "",

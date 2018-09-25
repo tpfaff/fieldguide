@@ -1,20 +1,19 @@
-package com.example.tyler.myapplication.overview
+package com.example.tyler.myapplication.overview.view
 
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.example.tyler.myapplication.R
-import com.example.tyler.myapplication.agree.AgreeFragment
+import com.example.tyler.myapplication.agree.view.AgreeFragment
 import com.example.tyler.myapplication.ext.runDelayedOnUiThread
-import com.example.tyler.myapplication.ext.toBitmap
 import kotlinx.android.synthetic.main.fragment_overview.*
-import kotlinx.android.synthetic.main.overview_list_item.*
 
 class OverviewFragment : Fragment() {
 
@@ -35,9 +34,16 @@ class OverviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+    }
+
     override fun onStart() {
         super.onStart()
         recycler_view.adapter = OverviewAdapter()
+
     }
 
     override fun onStop() {

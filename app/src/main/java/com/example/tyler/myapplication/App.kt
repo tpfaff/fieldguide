@@ -13,6 +13,7 @@ class App : Application(){
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true)
         }
 
+        //Auto-cache data for offline use
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 }

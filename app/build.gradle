@@ -28,8 +28,8 @@ dependencies {
     def lottie_version = "2.6.1"
     def rx_version = "2.2.2"
     def rx_android = "2.1.0"
-    def support_lib_version = "1.0.0-rc02"
-    def arch_version = "2.0.0-rc01"
+    def support_lib_version = "1.0.0"
+    def arch_version = "2.0.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

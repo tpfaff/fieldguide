@@ -1,15 +1,16 @@
-package com.example.tyler.myapplication.agree
+package com.example.tyler.myapplication.agree.model
 
 import android.util.Log
+import com.example.tyler.myapplication.agree.viewmodel.AgreeFragmentViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 
-class PollsDataModel {
+class PollsRepo {
     companion object {
-        val TAG = PollsDataModel::class.java.simpleName
+        val TAG = PollsRepo::class.java.simpleName
 
         /***
          * Function to fetch the /polls root
