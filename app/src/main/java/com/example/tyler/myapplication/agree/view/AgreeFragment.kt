@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_agree.*
 import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
-
+import android.net.Uri
 
 
 class AgreeFragment : Fragment() {
@@ -52,7 +52,7 @@ class AgreeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         agreeFragmentViewModel = ViewModelProviders.of(this).get(AgreeFragmentViewModel::class.java)
-        
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,7 @@ class AgreeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        
+
         (agreeFragmentViewModel.uiStateChanged
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -75,6 +75,9 @@ class AgreeFragment : Fragment() {
                         }
                         is UiState.ListReady -> {
                             showLoadedState(uiState)
+                        }
+                        is UiState.WebPage -> {
+                            showWebPage(uiState)
                         }
                         is UiState.Error -> {
                             showErrorState()
@@ -104,6 +107,11 @@ class AgreeFragment : Fragment() {
         recycler_view.adapter = AgreeAdapter(uiState.list)
     }
 
+    fun showWebPage(uiState: UiState.WebPage) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uiState.url))
+        startActivity(browserIntent)
+    }
+
     fun showErrorState() {
         progress_bar?.visibility = View.GONE
         Toast.makeText(this.context, "Couldn't load data", Toast.LENGTH_LONG).show()
@@ -121,14 +129,14 @@ class AgreeFragment : Fragment() {
         super.onStop()
     }
 
-    class AgreeAdapter(val list: List<PollModel?>) : RecyclerView.Adapter<AgreeAdapter.ItemViewHolder>() {
+    inner class AgreeAdapter(val list: List<PollModel?>) : RecyclerView.Adapter<AgreeAdapter.ItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-            val viewHolder =  ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.poll_list_item, parent, false))
+            val viewHolder = ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.poll_list_item, parent, false))
             viewHolder.webButton.setOnClickListener { view ->
-                
+                agreeFragmentViewModel.onItemClicked(recycler_view.getChildAdapterPosition(viewHolder.itemView))
             }
-            
+
             return viewHolder;
         }
 
@@ -143,11 +151,7 @@ class AgreeFragment : Fragment() {
             return list.size
         }
 
-        override fun getItemViewType(position: Int): Int {
-            return super.getItemViewType(position)
-        }
-
-        class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val titleTextView = view.findViewById<TextView>(R.id.title_textview)!!
             val bodyTextView = view.findViewById<TextView>(R.id.body_textview)!!
             val sourceTextView = view.findViewById<TextView>(R.id.source_textview)!!

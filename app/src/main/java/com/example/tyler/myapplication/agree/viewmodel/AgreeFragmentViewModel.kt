@@ -15,40 +15,42 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 
-class AgreeFragmentViewModel : ViewModel(), PollsReadyListener {
+class AgreeFragmentViewModel : ViewModel() {
 
     val uiStateChanged = PublishSubject.create<UiState>()
+    var clickedPostion = -1;
 
     companion object {
         val TAG = AgreeFragmentViewModel::class.java.simpleName
     }
 
 
-    override fun onPollsReady(list: Single<List<PollModel?>>) {
-        Log.d(TAG, "onPollsReady $list")
-        list.subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe({ list ->
-                    uiStateChanged.onNext(UiState.ListReady(list))
-                },
-                        { throwable ->
-                            Log.e(TAG, "error: $throwable")
-                        })
-    }
-
-    override fun onGetPollsCancelled(databaseError: DatabaseError) {
-        uiStateChanged.onNext(UiState.Error())
-    }
-
     fun loadPolls() {
         Log.d(TAG, "loadPolls")
         uiStateChanged.onNext(UiState.Loading())
-        PollsRepo.getPolls(this)
+
+        PollsRepo.getPolls(object : PollsReadyListener {
+            override fun onPollsReady(list: List<PollModel>) {
+                Log.d(TAG, "onPollsReady $list")
+                uiStateChanged.onNext(UiState.ListReady(list))
+            }
+
+            override fun onGetPollsCancelled(databaseError: DatabaseError) {
+                uiStateChanged.onNext(UiState.Error())
+            }
+        })
     }
-    
-    fun loadUrl(){
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse())
-        startActivity(browserIntent)
+
+    fun onItemClicked(position: Int) {
+        PollsRepo.getPolls(object : PollsReadyListener {
+            override fun onPollsReady(list: List<PollModel>) {
+                uiStateChanged.onNext(UiState.WebPage(list[position].fullUrl))
+            }
+
+            override fun onGetPollsCancelled(databaseError: DatabaseError) {
+                Log.e(TAG, "onItemClicked -> onGetPollsCancelled", databaseError.toException())
+            }
+        })
     }
 
     override fun onCleared() {

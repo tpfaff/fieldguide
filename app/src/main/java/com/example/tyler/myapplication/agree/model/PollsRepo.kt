@@ -30,11 +30,16 @@ class PollsRepo {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     Log.d(AgreeFragmentViewModel.TAG, "onDataChange: $dataSnapshot")
                     val data = ArrayList<PollModel>()
-                    listener.onPollsReady(Observable.fromIterable(dataSnapshot.children)
-                            .map { child -> child.getValue(PollModel::class.java) }
-                            .toSortedList { first, second ->
-                                second!!.percent.toInt() - first!!.percent.toInt()
-                            })
+                    listener.onPollsReady(dataSnapshot.children
+                            //todo maybe shouldn't assert this is non null...
+                            .map { child -> child.getValue(PollModel::class.java)!! }
+                            .sortedByDescending { child -> child.percent })
+
+//                    listener.onPollsReady(Observable.fromIterable(dataSnapshot.children)
+//                            .map { child -> child.getValue(PollModel::class.java)!! }
+//                            .toSortedList { first, second ->
+//                                second!!.percent.toInt() - first!!.percent.toInt()
+//                            })
                 }
             })
         }

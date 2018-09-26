@@ -4,6 +4,6 @@ import com.google.firebase.database.DatabaseError
 import io.reactivex.Single
 
 interface PollsReadyListener{
-    fun onPollsReady(list: Single<List<PollModel?>>)
+    fun onPollsReady(list: List<PollModel>)
     fun onGetPollsCancelled(databaseError: DatabaseError)
 }
