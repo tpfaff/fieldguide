@@ -1,30 +1,27 @@
 package com.example.tyler.myapplication.agree.view
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.tyler.myapplication.R
-import com.example.tyler.myapplication.agree.viewmodel.AgreeFragmentViewModel
 import com.example.tyler.myapplication.agree.model.PollModel
 import com.example.tyler.myapplication.agree.model.UiState
+import com.example.tyler.myapplication.agree.viewmodel.AgreeFragmentViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_agree.*
-import androidx.core.content.ContextCompat.startActivity
-import android.content.Intent
-import android.net.Uri
+import kotlinx.android.synthetic.main.poll_list_item.view.*
 
 
 class AgreeFragment : Fragment() {
@@ -129,35 +126,39 @@ class AgreeFragment : Fragment() {
         super.onStop()
     }
 
-    inner class AgreeAdapter(val list: List<PollModel?>) : RecyclerView.Adapter<AgreeAdapter.ItemViewHolder>() {
+    inner class AgreeAdapter(val list: List<PollModel>) : RecyclerView.Adapter<AgreeAdapter.ItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val viewHolder = ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.poll_list_item, parent, false))
-            viewHolder.webButton.setOnClickListener { view ->
-                agreeFragmentViewModel.onItemClicked(recycler_view.getChildAdapterPosition(viewHolder.itemView))
-            }
-
-            return viewHolder;
+            return viewHolder
         }
 
+
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            holder.titleTextView.setText(list.get(position)?.title)
-            holder.bodyTextView.setText(list.get(position)?.body)
-            holder.sourceTextView.setText(list.get(position)?.displayUrl)
-            holder.percentTextView.setText(list.get(position)?.percent + "%")
+            holder.poll = list.get(position)
         }
 
         override fun getItemCount(): Int {
             return list.size
         }
 
-        inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val titleTextView = view.findViewById<TextView>(R.id.title_textview)!!
-            val bodyTextView = view.findViewById<TextView>(R.id.body_textview)!!
-            val sourceTextView = view.findViewById<TextView>(R.id.source_textview)!!
-            val percentTextView = view.findViewById<TextView>(R.id.percent_textView)!!
-            val webButton = view.findViewById<ImageButton>(R.id.web_button)!!
+        inner class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+            var _poll: PollModel? = null
+            var poll: PollModel
+                get() = _poll!!
+                set(value) {
+                    _poll = value
+                    view.title_textview.text = _poll?.title
+                    view.body_textview.text = _poll?.body
+                    view.source_textview.text = _poll?.displayUrl
+                    view.percent_textView.text = "${_poll?.percent}%"
+                    view.web_button.setOnClickListener {
+                        agreeFragmentViewModel.onItemClicked(poll)
+                    }
+
+                }
         }
     }
+
 
 }
