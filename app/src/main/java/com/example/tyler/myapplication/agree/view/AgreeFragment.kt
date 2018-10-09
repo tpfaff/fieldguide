@@ -1,6 +1,7 @@
 package com.example.tyler.myapplication.agree.view
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -31,12 +32,6 @@ class AgreeFragment : Fragment() {
 
         val TAG = AgreeFragment::class.java.simpleName
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment AgreeFragment.
-         */
         fun newInstance() =
                 AgreeFragment().apply {
                     arguments = Bundle().apply {}
@@ -62,7 +57,7 @@ class AgreeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        (agreeFragmentViewModel.uiStateChanged
+        (agreeFragmentViewModel.getUiStateChanged()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ uiState ->
@@ -90,7 +85,6 @@ class AgreeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         (activity as AppCompatActivity).supportActionBar?.title = "Agree"
-
         agreeFragmentViewModel.loadPolls()
     }
 
@@ -129,10 +123,8 @@ class AgreeFragment : Fragment() {
     inner class AgreeAdapter(val list: List<PollModel>) : RecyclerView.Adapter<AgreeAdapter.ItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-            val viewHolder = ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.poll_list_item, parent, false))
-            return viewHolder
+            return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.poll_list_item, parent, false))
         }
-
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             holder.poll = list.get(position)
@@ -143,9 +135,11 @@ class AgreeFragment : Fragment() {
         }
 
         inner class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            var _poll: PollModel? = null
+            //Basically using this PollModel along with it's backing property as a cheap "viewmodel"
+            private var _poll: PollModel? = null
             var poll: PollModel
                 get() = _poll!!
+                @SuppressLint("SetTextI18n")
                 set(value) {
                     _poll = value
                     view.title_textview.text = _poll?.title

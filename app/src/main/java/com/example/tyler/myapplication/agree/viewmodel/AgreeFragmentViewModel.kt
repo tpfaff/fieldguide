@@ -7,12 +7,14 @@ import com.example.tyler.myapplication.agree.model.PollsReadyListener
 import com.example.tyler.myapplication.agree.model.PollsRepo
 import com.example.tyler.myapplication.agree.model.UiState
 import com.google.firebase.database.DatabaseError
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
 class AgreeFragmentViewModel : ViewModel() {
 
-    val uiStateChanged = PublishSubject.create<UiState>()
+    private val uiStateChanged = PublishSubject.create<UiState>()
+
 
     companion object {
         val TAG = AgreeFragmentViewModel::class.java.simpleName
@@ -45,6 +47,10 @@ class AgreeFragmentViewModel : ViewModel() {
                 Log.e(TAG, "onItemClicked -> onGetPollsCancelled", databaseError.toException())
             }
         })
+    }
+
+    fun getUiStateChanged(): Observable<UiState> {
+        return uiStateChanged.hide()
     }
 
     override fun onCleared() {
