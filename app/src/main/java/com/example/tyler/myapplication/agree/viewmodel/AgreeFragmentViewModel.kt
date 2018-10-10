@@ -2,10 +2,10 @@ package com.example.tyler.myapplication.agree.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.tyler.myapplication.UiState
 import com.example.tyler.myapplication.agree.model.PollModel
 import com.example.tyler.myapplication.agree.model.PollsReadyListener
 import com.example.tyler.myapplication.agree.model.PollsRepo
-import com.example.tyler.myapplication.agree.model.UiState
 import com.google.firebase.database.DatabaseError
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

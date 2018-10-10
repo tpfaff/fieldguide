@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tyler.myapplication.R
+import com.example.tyler.myapplication.UiState
 import com.example.tyler.myapplication.agree.model.PollModel
-import com.example.tyler.myapplication.agree.model.UiState
 import com.example.tyler.myapplication.agree.viewmodel.AgreeFragmentViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -93,9 +93,10 @@ class AgreeFragment : Fragment() {
         progress_bar.visibility = View.VISIBLE
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun showLoadedState(uiState: UiState.ListReady) {
         progress_bar.visibility = View.GONE
-        recycler_view.adapter = AgreeAdapter(uiState.list)
+        recycler_view.adapter = AgreeAdapter(uiState.list as List<PollModel>)
     }
 
     fun showWebPage(uiState: UiState.WebPage) {
@@ -136,16 +137,17 @@ class AgreeFragment : Fragment() {
 
         inner class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             //Basically using this PollModel along with it's backing property as a cheap "viewmodel"
+            //todo any real reason for this backing property?
             private var _poll: PollModel? = null
             var poll: PollModel
                 get() = _poll!!
                 @SuppressLint("SetTextI18n")
                 set(value) {
                     _poll = value
-                    view.title_textview.text = _poll?.title
-                    view.body_textview.text = _poll?.body
-                    view.source_textview.text = _poll?.displayUrl
-                    view.percent_textView.text = "${_poll?.percent}%"
+                    view.title_textview.text = poll.title
+                    view.body_textview.text = poll.body
+                    view.source_textview.text = poll.displayUrl
+                    view.percent_textView.text = "${poll.percent}%"
                     view.web_button.setOnClickListener {
                         agreeFragmentViewModel.onItemClicked(poll)
                     }

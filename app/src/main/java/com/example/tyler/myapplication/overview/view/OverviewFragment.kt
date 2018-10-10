@@ -16,6 +16,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.tyler.myapplication.R
 import com.example.tyler.myapplication.agree.view.AgreeFragment
 import com.example.tyler.myapplication.ext.runDelayedOnUiThread
+import com.example.tyler.myapplication.organizations.view.OrganizationsFragment
 import kotlinx.android.synthetic.main.fragment_overview.*
 
 class OverviewFragment : Fragment() {
@@ -60,9 +61,10 @@ class OverviewFragment : Fragment() {
 
         lateinit var recyclerView: RecyclerView
         val VIEW_TYPE_POLLS = 0
+        val VIEW_TYPE_ORGANIZATIONS = 1
         val VIEW_TYPE_REGISTER_TO_VOTE = 2
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OverviewItemViewHolder {
-            return OverviewItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.overview_list_item, parent, false), recyclerView)
+            return OverviewItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.overview_list_item, parent, false))
         }
 
         override fun getItemCount(): Int {
@@ -82,8 +84,10 @@ class OverviewFragment : Fragment() {
 //                        holder.animationView.setBackgroundColor(it)
 //                    }
                 }
-                1 -> {
+                VIEW_TYPE_ORGANIZATIONS -> {
                     holder.animationView.setAnimation(R.raw.favorite)
+                    holder.title.text = "Organizations"
+                    holder.body.text = "Connect with progressive organizations to help make a difference"
                     runDelayedOnUiThread({ holder.animationView.playAnimation() }, 500)
                 }
                 VIEW_TYPE_REGISTER_TO_VOTE -> {
@@ -114,12 +118,13 @@ class OverviewFragment : Fragment() {
         override fun getItemViewType(position: Int): Int {
             when (position) {
                 0 -> return VIEW_TYPE_POLLS
+                1 -> return VIEW_TYPE_ORGANIZATIONS
                 2 -> return VIEW_TYPE_REGISTER_TO_VOTE
                 else -> return 0
             }
         }
 
-        inner class OverviewItemViewHolder(view: View, recyclerView: RecyclerView) : RecyclerView.ViewHolder(view) {
+        inner class OverviewItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val animationView = view.findViewById<LottieAnimationView>(R.id.animation_view)!!
             val title = view.findViewById<TextView>(R.id.title_textview)
             val body = view.findViewById<TextView>(R.id.body_textview)
@@ -135,8 +140,12 @@ class OverviewFragment : Fragment() {
                                     ?.commit()
                         }
 
-                        1 -> {
-
+                        VIEW_TYPE_ORGANIZATIONS -> {
+                            this@OverviewFragment.fragmentManager
+                                    ?.beginTransaction()
+                                    ?.replace(R.id.root, OrganizationsFragment.newInstance(), OrganizationsFragment.TAG)
+                                    ?.addToBackStack(OrganizationsFragment.TAG)
+                                    ?.commit()
                         }
 
                         VIEW_TYPE_REGISTER_TO_VOTE -> {
