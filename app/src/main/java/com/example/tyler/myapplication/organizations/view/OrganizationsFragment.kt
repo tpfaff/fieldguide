@@ -1,10 +1,13 @@
 package com.example.tyler.myapplication.organizations.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +18,7 @@ import com.example.tyler.myapplication.organizations.viewmodel.OrganizationFragm
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_organizations.*
-import kotlinx.android.synthetic.main.overview_list_item.view.*
+import kotlinx.android.synthetic.main.org_list_item.view.*
 
 class OrganizationsFragment : Fragment() {
     companion object {
@@ -40,6 +43,8 @@ class OrganizationsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.title = "Organizations"
 
         viewModel.getUiStateChanged()
                 .subscribeOn(Schedulers.io())
@@ -87,10 +92,11 @@ class OrganizationsFragment : Fragment() {
     }
 
     fun showWebPage(uiState: UiState.WebPage) {
-
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uiState.url))
+        startActivity(browserIntent)
     }
 
-    class OrganizationsAdapter(val organizations: List<OrganizationModel>) : RecyclerView.Adapter<OrganizationsAdapter.OrganizationViewHolder>() {
+    inner class OrganizationsAdapter(val organizations: List<OrganizationModel>) : RecyclerView.Adapter<OrganizationsAdapter.OrganizationViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrganizationViewHolder {
             return OrganizationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.org_list_item, parent, false));
@@ -106,12 +112,28 @@ class OrganizationsFragment : Fragment() {
 
         inner class OrganizationViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             private var _organization: OrganizationModel? = null
+            private val OUR_REVOLUTION = "Our Revolution"
+            private val DSA = "Democratic Socialists of America"
             var organization: OrganizationModel
                 get() = _organization!!
                 set(value) {
                     _organization = value
                     view.title_textview.text = organization.name
                     view.body_textview.text = organization.summary
+                    view.web_button.setOnClickListener {
+                        showWebPage(UiState.WebPage(organization.url))
+                    }
+                    when (organization.name) {
+                        OUR_REVOLUTION -> {
+                            view.background_image.background = view.resources.getDrawable(R.drawable.our_revolution)
+                        }
+                        DSA -> {
+                            view.background_image.background = view.resources.getDrawable(R.drawable.dsa)
+                        }
+                        else ->
+                            view.background_image.background = view.resources.getDrawable(R.drawable.jd2);
+
+                    }
                 }
         }
     }

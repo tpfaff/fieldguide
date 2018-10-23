@@ -27,4 +27,5 @@ class OrganizationFragmentViewModel : ViewModel(), OrganizationsReadyListener {
     override fun onGetOrgsCancelled(databaseError: DatabaseError) {
         uiState.onNext(UiState.Error())
     }
+    
 }
