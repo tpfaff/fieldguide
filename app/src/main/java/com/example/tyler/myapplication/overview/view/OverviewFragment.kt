@@ -85,7 +85,7 @@ class OverviewFragment : Fragment() {
 //                    }
                 }
                 VIEW_TYPE_ORGANIZATIONS -> {
-                    holder.animationView.setAnimation(R.raw.favorite)
+                    holder.animationView.setAnimation(R.raw.cubos)
                     holder.title.text = "Organizations"
                     holder.body.text = "Connect with progressive organizations to help make a difference"
                     runDelayedOnUiThread({ holder.animationView.playAnimation() }, 500)
