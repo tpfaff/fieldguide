@@ -55,5 +55,6 @@ class AgreeFragmentViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        uiStateChanged.onComplete()
     }
 }

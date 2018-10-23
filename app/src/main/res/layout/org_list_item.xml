@@ -10,11 +10,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground">
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/org_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/title_textview"
@@ -25,18 +27,16 @@
             android:text="TextView"
             android:textAppearance="@android:style/TextAppearance.Material.Title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/org_imageview" />
 
         <TextView
             android:id="@+id/body_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="8dp"
             android:text="TextView"
             app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toStartOf="@+id/percent_textView"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_textview" />
 
@@ -46,11 +46,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:background="@null"
             android:foreground="?selectableItemBackground"
             android:src="@drawable/ic_action_globe"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/share_button" />
+            app:layout_constraintTop_toBottomOf="@id/body_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

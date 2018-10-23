@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tyler.myapplication.R
 import com.example.tyler.myapplication.UiState
 import com.example.tyler.myapplication.organizations.model.OrganizationModel
 import com.example.tyler.myapplication.organizations.viewmodel.OrganizationFragmentViewModel
@@ -75,18 +74,18 @@ class OrganizationsFragment : Fragment() {
         viewModel.loadOrgs()
     }
 
-    fun showLoadingState() {
+    private fun showLoadingState() {
         progress_bar.visibility = View.VISIBLE
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun showListReadyState(uiState: UiState.ListReady) {
+    private fun showListReadyState(uiState: UiState.ListReady) {
         progress_bar.visibility = View.GONE
         adapter = OrganizationsAdapter(uiState.list as List<OrganizationModel>)
         recycler_view.adapter = adapter
     }
 
-    fun showErrorState() {
+    private fun showErrorState() {
         progress_bar.visibility = View.GONE
 
     }
@@ -125,13 +124,13 @@ class OrganizationsFragment : Fragment() {
                     }
                     when (organization.name) {
                         OUR_REVOLUTION -> {
-                            view.background_image.background = view.resources.getDrawable(R.drawable.our_revolution)
+                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.or))
                         }
                         DSA -> {
-                            view.background_image.background = view.resources.getDrawable(R.drawable.dsa)
+                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.dsa))
                         }
                         else ->
-                            view.background_image.background = view.resources.getDrawable(R.drawable.jd2);
+                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.justdems))
 
                     }
                 }
