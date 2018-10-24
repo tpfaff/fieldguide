@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tyler.myapplication.R
 import com.example.tyler.myapplication.UiState
 import com.example.tyler.myapplication.organizations.model.OrganizationModel
 import com.example.tyler.myapplication.organizations.viewmodel.OrganizationFragmentViewModel
@@ -125,13 +124,13 @@ class OrganizationsFragment : Fragment() {
                     }
                     when (organization.name) {
                         OUR_REVOLUTION -> {
-                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.dsa))
+                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.or))
                         }
                         DSA -> {
                             view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.dsa))
                         }
                         else ->
-                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.dsa))
+                            view.org_imageview.setImageDrawable(view.resources.getDrawable(R.drawable.justdems))
 
                     }
                 }
