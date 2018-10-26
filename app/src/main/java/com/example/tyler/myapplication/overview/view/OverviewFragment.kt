@@ -80,9 +80,6 @@ class OverviewFragment : Fragment() {
                 VIEW_TYPE_POLLS -> {
                     holder.animationView.setAnimation(R.raw.bar_graph)
                     holder.animationView.playAnimation()
-//                    createPaletteSync(holder.animationView.background.toBitmap()).lightVibrantSwatch?.rgb?.let {
-//                        holder.animationView.setBackgroundColor(it)
-//                    }
                 }
                 VIEW_TYPE_ORGANIZATIONS -> {
                     holder.animationView.setAnimation(R.raw.youre_in)
