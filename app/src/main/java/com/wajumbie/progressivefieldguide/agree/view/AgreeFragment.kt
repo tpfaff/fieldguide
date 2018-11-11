@@ -71,6 +71,9 @@ class AgreeFragment : Fragment() {
                         is UiState.WebPage -> {
                             showWebPage(uiState)
                         }
+                        is UiState.Share -> {
+                            showSharingOptions(uiState)
+                        }
                         is UiState.Error -> {
                             showErrorState()
                         }
@@ -94,31 +97,26 @@ class AgreeFragment : Fragment() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun showLoadedState(uiState: UiState.ListReady) {
+    private fun showLoadedState(uiState: UiState.ListReady) {
         progress_bar.visibility = View.GONE
         recycler_view.adapter = AgreeAdapter(uiState.list as List<PollModel>)
     }
 
-    fun showWebPage(uiState: UiState.WebPage) {
+    private fun showWebPage(uiState: UiState.WebPage) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uiState.url))
         startActivity(browserIntent)
     }
+    
+    private fun showSharingOptions(uiState: UiState.Share) {
+         val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, uiState.shareText)
+        shareIntent.setType("text/plain")
+        startActivity(shareIntent)
+    }
 
-    fun showErrorState() {
+    private fun showErrorState() {
         progress_bar?.visibility = View.GONE
         Toast.makeText(this.context, "Couldn't load data", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     inner class AgreeAdapter(val list: List<PollModel>) : RecyclerView.Adapter<AgreeAdapter.ItemViewHolder>() {
@@ -149,7 +147,10 @@ class AgreeFragment : Fragment() {
                     view.source_textview.text = poll.displayUrl
                     view.percent_textView.text = "${poll.percent}%"
                     view.web_button.setOnClickListener {
-                        agreeFragmentViewModel.onItemClicked(poll)
+                        agreeFragmentViewModel.onShowWebPage(poll)
+                    }
+                    view.share_button.setOnClickListener{
+                        agreeFragmentViewModel.onSharePoll(poll)
                     }
 
                 }

@@ -37,7 +37,7 @@ class AgreeFragmentViewModel : ViewModel() {
         })
     }
 
-    fun onItemClicked(pollModel: PollModel) {
+    fun onShowWebPage(pollModel: PollModel) {
         PollsRepo.getPolls(object : PollsReadyListener {
             override fun onPollsReady(list: List<PollModel>) {
                 uiStateChanged.onNext(UiState.WebPage(pollModel.fullUrl))
@@ -47,6 +47,10 @@ class AgreeFragmentViewModel : ViewModel() {
                 Log.e(TAG, "onItemClicked -> onGetPollsCancelled", databaseError.toException())
             }
         })
+    }
+    
+    fun onSharePoll(pollModel: PollModel){
+        uiStateChanged.onNext(UiState.Share("${pollModel.body}\n\nSource: ${pollModel.fullUrl}"))
     }
 
     fun getUiStateChanged(): Observable<UiState> {
