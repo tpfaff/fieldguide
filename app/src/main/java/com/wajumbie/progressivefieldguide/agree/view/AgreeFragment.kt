@@ -110,7 +110,7 @@ class AgreeFragment : Fragment() {
     private fun showSharingOptions(uiState: UiState.Share) {
          val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.putExtra(Intent.EXTRA_TEXT, uiState.shareText)
-        shareIntent.setType("text/plain")
+        shareIntent.type = "text/plain"
         startActivity(shareIntent)
     }
 
@@ -126,7 +126,7 @@ class AgreeFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            holder.poll = list.get(position)
+            holder.poll = list[position]
         }
 
         override fun getItemCount(): Int {
@@ -144,9 +144,12 @@ class AgreeFragment : Fragment() {
                     _poll = value
                     view.title_textview.text = poll.title
                     view.body_textview.text = poll.body
-                    view.source_textview.text = poll.displayUrl
+                    view.source_textview.text = "Source: ${poll.displayUrl}"
                     view.percent_textView.text = "${poll.percent}%"
                     view.web_button.setOnClickListener {
+                        agreeFragmentViewModel.onShowWebPage(poll)
+                    }
+                    view.source_textview.setOnClickListener{
                         agreeFragmentViewModel.onShowWebPage(poll)
                     }
                     view.share_button.setOnClickListener{
